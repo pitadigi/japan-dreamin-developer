@@ -1,0 +1,87 @@
+<template>
+  <lightning-card variant="narrow" icon-name="standard:team_member">
+    <h1 slot="title">Project</h1>
+    <div slot="actions">
+      <lightning-button-group>
+        <lightning-button-icon
+          icon-name="utility:save"
+          onclick={handleSave}
+        ></lightning-button-icon>
+        <lightning-button-icon
+          icon-name="utility:add"
+          onclick={handleAdd}
+        ></lightning-button-icon>
+      </lightning-button-group>
+    </div>
+    <div>
+      <lightning-input
+        type="text"
+        name="projectName"
+        label="プロジェクト名"
+        value={projectName}
+        onchange={handleChangeName}
+      ></lightning-input>
+      <lightning-input
+        type="text"
+        name="projectNumber"
+        label="プロジェクト番号"
+        value={projectNumber}
+        onchange={handleChangeNumber}
+      ></lightning-input>
+      <lightning-combobox
+        name="Status"
+        label="ステータス"
+        options={projectStatus}
+        value={status}
+        onchange={handleChangeStatus}
+      ></lightning-combobox>
+      <lightning-input
+        type="date"
+        name="startDate"
+        label="開始日"
+        value={startDate}
+        onchange={handleChangeStartDate}
+      ></lightning-input>
+      <lightning-input
+        type="date"
+        name="endDate"
+        label="終了日"
+        value={endDate}
+        onchange={handleChangeEndDate}
+      ></lightning-input>
+    </div>
+    <div>
+      <table
+        class="slds-table slds-table_bordered slds-border_left slds-border_right"
+      >
+        <thead>
+          <tr class="slds-line-height_reset">
+            <th class="" scope="col">
+              <div class="slds-truncate" title="タスク名">タスク名</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="開始日">開始日</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="終了日">終了日</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="終了日">所要日数</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="担当">担当</div>
+            </th>
+            <th class="" scope="col">
+              <div class="slds-truncate" title="ステータス">ステータス</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={tasks} for:item="task">
+            <c-task key={task.Key} task={task}></c-task>
+          </template>
+        </tbody>
+      </table>
+    </div>
+  </lightning-card>
+</template>

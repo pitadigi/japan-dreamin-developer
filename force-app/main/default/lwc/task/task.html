@@ -1,0 +1,55 @@
+<template>
+  <th data-label="タスク名" scope="row">
+    <lightning-input
+      type="text"
+      label="タスク名"
+      name="taskName"
+      variant="label-hidden"
+      value={task.Name}
+      onchange={handleChangeTaskName}
+    ></lightning-input>
+  </th>
+  <td data-label="開始日">
+    <lightning-input
+      type="date"
+      label="開始日"
+      name="startDate"
+      variant="label-hidden"
+      value={task.StartDate__c}
+      onchange={handleChangeStartDate}
+    ></lightning-input>
+  </td>
+  <td data-label="終了日">
+    <lightning-input
+      type="date"
+      label="終了日"
+      name="endDate"
+      variant="label-hidden"
+      value={task.EndDate__c}
+      onchange={handleChangeEndDate}
+    ></lightning-input>
+  </td>
+  <td data-label="所要日数">
+    <lightning-formatted-number value={taskSpan}></lightning-formatted-number>
+  </td>
+  <td data-label="担当">
+    <lightning-combobox
+      label="担当"
+      name="developer"
+      options={developers}
+      variant="label-hidden"
+      value={task.Developer__c}
+      onchange={handleChangeDeveloper}
+    ></lightning-combobox>
+  </td>
+  <td data-label="ステータス">
+    <lightning-combobox
+      label="ステータス"
+      name="status"
+      options={status}
+      variant="label-hidden"
+      value={task.Status__c}
+      onchange={handleChangeStatus}
+    ></lightning-combobox>
+  </td>
+</template>
