@@ -78,7 +78,11 @@
         </thead>
         <tbody>
           <template for:each={tasks} for:item="task">
-            <c-task key={task.Key} task={task}></c-task>
+            <c-task
+              key={task.Key}
+              task={task}
+              onchange={handleChangeTask}
+            ></c-task>
           </template>
         </tbody>
       </table>

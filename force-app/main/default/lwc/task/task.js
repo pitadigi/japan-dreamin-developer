@@ -45,6 +45,8 @@ export default class Task extends LightningElement {
    */
   handleChangeTaskName(evt) {
     this._task.Name = evt.target.value;
+
+    this.emitChange();
   }
 
   /**
@@ -54,6 +56,8 @@ export default class Task extends LightningElement {
     this._task.StartDate__c = evt.target.value;
 
     this.calcTaskSpan();
+
+    this.emitChange();
   }
 
   /**
@@ -63,6 +67,8 @@ export default class Task extends LightningElement {
     this._task.EndDate__c = evt.target.value;
 
     this.calcTaskSpan();
+
+    this.emitChange();
   }
 
   /**
@@ -70,6 +76,8 @@ export default class Task extends LightningElement {
    */
   handleChangeDeveloper(evt) {
     this._task.Developer__c = evt.target.value;
+
+    this.emitChange();
   }
 
   /**
@@ -77,6 +85,8 @@ export default class Task extends LightningElement {
    */
   handleChangeStatus(evt) {
     this._task.Status__c = evt.target.value;
+
+    this.emitChange();
   }
 
   /**
@@ -91,5 +101,12 @@ export default class Task extends LightningElement {
     const endDate = new Date(this._task.EndDate__c);
 
     this.taskSpan = (endDate - startDate) / 86400000;
+  }
+
+  /**
+   * タスク情報の変更をイベント通知
+   */
+  emitChange() {
+    this.dispatchEvent(new CustomEvent("change", { detail: this._task }));
   }
 }

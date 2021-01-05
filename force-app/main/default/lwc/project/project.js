@@ -1,6 +1,7 @@
 import { LightningElement, api, wire, track } from "lwc";
 import { getRecord, getFieldValue } from "lightning/uiRecordApi";
 import registProject from "@salesforce/apex/Project.registProject";
+import getTasks from "@salesforce/apex/Project.getTasks";
 
 const PROJECT_NAME = "Project__c.Name";
 const PROJECT_STARTDATE = "Project__c.StartDate__c";
@@ -63,31 +64,23 @@ export default class Project extends LightningElement {
    */
   @track tasks = [];
 
-  connectedCallback() {
-    this.tasks.push({
-      Key: 1,
-      Id: "",
-      Name: "タスクA",
-      Status__c: "未着手",
-      StartDate__c: "2020-11-02",
-      EndDate__c: "",
-      Developer__c: "またえ"
-    });
-
-    this.recordId = "a001m000001qlsdAAA";
-  }
-
   /**
    * プロジェクト情報を取得する
    */
   @wire(getRecord, { recordId: "$recordId", fields: PROJECT_FLELDS })
-  loadProject({ error, data }) {
+  async loadProject({ error, data }) {
     if (data) {
       this.projectName = getFieldValue(data, PROJECT_NAME);
       this.projectNumber = getFieldValue(data, PROJECT_NUMBER);
       this.status = getFieldValue(data, PROJECT_STATUS);
       this.startDate = getFieldValue(data, PROJECT_STARTDATE);
       this.endDate = getFieldValue(data, PROJECT_ENDDATE);
+
+      const tasks = await getTasks({ projectId: this.recordId });
+      this.tasks = Object.assign(tasks, {});
+      for (let i = 0; i < this.tasks.length; i++) {
+        this.tasks[i].Key = i;
+      }
     }
   }
 
@@ -127,7 +120,8 @@ export default class Project extends LightningElement {
       Status__c: "未着手",
       StartDate__c: undefined,
       EndDate__c: undefined,
-      Developer__c: undefined
+      Developer__c: undefined,
+      Project__c: this.recordId
     });
   }
 
@@ -164,5 +158,17 @@ export default class Project extends LightningElement {
    */
   handleChangeStatus(evt) {
     this.Status = evt.target.value;
+  }
+
+  /**
+   * タスク情報の変更
+   */
+  handleChangeTask(evt) {
+    for (let i = 0; i < this.tasks.length; i++) {
+      if (this.tasks[i].Key === evt.detail.Key) {
+        this.tasks[i] = evt.detail;
+        break;
+      }
+    }
   }
 }
